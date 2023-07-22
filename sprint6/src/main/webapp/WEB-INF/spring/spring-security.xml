@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bean:beans xmlns:bean="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+        
+        
+      <http auto-config="true">
+        	<intercept-url pattern="/" access="permitAll"/>
+	<!--Espacio solo permitido solo para usuarios tipo Cliente -->
+        	<intercept-url pattern="/capacitacion/new" access="hasAnyAuthority('Cliente')"/>
+        	<intercept-url pattern="/capacitacion/save" access="hasAnyAuthority('Cliente')"/>
+        	<intercept-url pattern="/capacitaciones" access="hasAnyAuthority('Cliente')"/>
+        	<intercept-url pattern="/contacto" access="hasAnyAuthority('Cliente')"/>
+        	<intercept-url pattern="/contacto/save" access="hasAnyAuthority('Cliente')"/>
+	<!--Espacio solo permitido solo para usuarios tipo Administrativo -->
+        	<intercept-url pattern="/lista-usuarios" access="hasAnyAuthority('Administrativo')"/>
+        	<intercept-url pattern="/createForm" access="hasAnyAuthority('Administrativo')"/>
+        	<intercept-url pattern="/create-user" access="hasAnyAuthority('Administrativo')"/>
+        	<intercept-url pattern="/listar-pagos" access="hasAnyAuthority('Administrativo')"/>
+        	<intercept-url pattern="/formulario-pago" access="hasAnyAuthority('Administrativo')"/>
+        	<intercept-url pattern="/createPago" access="hasAnyAuthority('Administrativo')"/>
+	<!--Espacio solo permitido solo para usuarios tipo Profesional -->
+        	<intercept-url pattern="/listar-visitas" access="hasAnyAuthority('Profesional')"/>
+        	<intercept-url pattern="/nueva-visita" access="hasAnyAuthority('Profesional')"/>
+        	<intercept-url pattern="/crear-visita" access="hasAnyAuthority('Profesional')"/>
+        	<intercept-url pattern="/revs" access="hasAnyAuthority('Profesional')"/>
+        	<intercept-url pattern="/nueva-revision" access="hasAnyAuthority('Profesional')"/>
+        	<intercept-url pattern="/crear-revision" access="hasAnyAuthority('Profesional')"/>
+        	
+<!--         	<intercept-url pattern="/api/*" access="hasAnyAuthority('ADMIN')"/> -->
+        
+        	<!-- Para crear un formulario personalizado -->
+        	<form-login login-page="/login"
+        		authentication-failure-url="/error"
+        		username-parameter="username"
+        		password-parameter="password"/>
+        	<csrf disabled="true"/>
+        	<logout logout-success-url="/login"/>
+       </http>
+        
+        <authentication-manager>
+        	<authentication-provider>
+        		<password-encoder hash="bcrypt"/>
+        		
+        		<user-service>
+        			<user name="cata321" authorities="Cliente" password="$2a$10$br285zcBWkWzay7AB9FVveywJxBWXyCmcYnAnYciSuuxiy/0PtNbG"/>
+        			<user name="thony007" authorities="Administrativo" password="$2a$10$br285zcBWkWzay7AB9FVveywJxBWXyCmcYnAnYciSuuxiy/0PtNbG"/>
+        			<user name="cesar12" authorities="Profesional" password="$2a$10$br285zcBWkWzay7AB9FVveywJxBWXyCmcYnAnYciSuuxiy/0PtNbG"/>
+        			<user name="jaime10" authorities="Cliente" password="$2a$10$br285zcBWkWzay7AB9FVveywJxBWXyCmcYnAnYciSuuxiy/0PtNbG"/>
+        		</user-service>  
+        		 
+<!--         		 <jdbc-user-service data-source-ref="ds" -->
+<!--         		 	users-by-username-query= "select usuario as username, password, 1 as enabled from usuarios where usuario = ?" -->
+<!--         		 	authorities-by-username-query="select usuario as username, tipo_usuario as authority from usuarios where usuario = ?" -->
+<!--         		 /> -->
+        	</authentication-provider>
+        </authentication-manager>
+ 
+ </bean:beans>
